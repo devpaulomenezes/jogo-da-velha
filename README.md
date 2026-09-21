@@ -91,6 +91,6 @@ jogo-da-velha/
 
 ## 👤 Autor
 
-- **Nome**: [Seu Nome]
+- **Nome**: Paulo Moura Menezes
 - **Curso**: Análise e Desenvolvimento de Sistemas (ADS) — IFPB
 - **Disciplina**: Programação para Dispositivos Móveis (PDM)
