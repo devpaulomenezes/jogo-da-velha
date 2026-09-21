@@ -9,8 +9,8 @@ Este é o repositório do projeto Jogo da Velha desenvolvido para dispositivos m
 | Etapa | Descrição | Status |
 | :--- | :--- | :--- |
 | 1 | Interface com o usuário (tabuleiro funcional, interação clara e placar com as vitórias de usuário e computador) | ✅ Concluída |
-| 2 | Modelagem e implementação orientada a objetos em projeto Node.js separado, com interface CLI | 🔄 Em andamento |
-| 3 | Integração da implementação OO com a interface React Native | ⏳ Pendente |
+| 2 | Modelagem e implementação orientada a objetos em projeto Node.js separado, com interface CLI | ✅ Concluída |
+| 3 | Integração da implementação OO com a interface React Native | ✅ Concluída |
 | 4 | CPU aprimorada com o algoritmo MinMax | ⏳ Pendente |
 
 ---
@@ -44,7 +44,7 @@ jogo-da-velha/
 ## 🚀 Como executar
 
 ### Pré-requisitos
-- Node.js 22+ instalado no computador.
+- Node.js 26.2.0+ instalado no computador.
 - Aplicativo **Expo Go** instalado no dispositivo móvel.
 - Dispositivo móvel e computador conectados à mesma rede Wi-Fi.
 

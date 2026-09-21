@@ -3,10 +3,13 @@ import { View, Text, Button, StyleSheet } from 'react-native';
 import Tabuleiro from './components/Tabuleiro';
 import Placar from './components/Placar';
 import StatusPartida from './components/StatusPartida';
-import { verificarResultado, casasVazias } from './logic/regraDeVitoria';
+import { verificarResultado } from './logic/regraDeVitoria';
+import { Tabuleiro as TabuleiroModel } from './logic/Tabuleiro';
+import { JogadorCPU } from './logic/JogadorCPU';
 
-const TABULEIRO_INICIAL = Array(9).fill(null);
+const TABULEIRO_INICIAL = new TabuleiroModel();
 const PLACAR_INICIAL = { usuario: 0, empates: 0, cpu: 0 };
+const cpu = new JogadorCPU('CPU', 'O');
 
 export default function App() {
   const [board, setBoard] = useState(TABULEIRO_INICIAL);
@@ -15,21 +18,13 @@ export default function App() {
   const [placar, setPlacar] = useState(PLACAR_INICIAL);
   const [cpuPensando, setCpuPensando] = useState(false);
 
-  function jogadaDaCPU(tabuleiroAtual) {
-    const vazias = casasVazias(tabuleiroAtual);
-    if (vazias.length === 0) return tabuleiroAtual;
-
-    const posicao = vazias[Math.floor(Math.random() * vazias.length)];
-    return tabuleiroAtual.map((casa, i) => (i === posicao ? 'O' : casa));
-  }
-
   function onPressCasa(index) {
-    if (board[index] !== null || vencedor || cpuPensando) return;
+    if (board.casas[index] !== null || vencedor || cpuPensando) return;
 
-    const novoBoard = board.map((casa, i) => (i === index ? 'X' : casa));
+    const novoBoard = board.marcar(index, 'X');
     setBoard(novoBoard);
 
-    const resultado = verificarResultado(novoBoard);
+    const resultado = verificarResultado(novoBoard.casas);
     if (resultado) {
       finalizarPartida(resultado);
       return;
@@ -37,11 +32,12 @@ export default function App() {
 
     setTurno('O');
     setCpuPensando(true);
-    setTimeout(() => {
-      const boardDaCPU = jogadaDaCPU(novoBoard);
+    setTimeout(async () => {
+      const indiceCPU = await cpu.escolherJogada(novoBoard);
+      const boardDaCPU = novoBoard.marcar(indiceCPU, 'O');
       setBoard(boardDaCPU);
       setCpuPensando(false);
-      const resultadoCPU = verificarResultado(boardDaCPU);
+      const resultadoCPU = verificarResultado(boardDaCPU.casas);
       if (resultadoCPU) {
         finalizarPartida(resultadoCPU);
       } else {
@@ -71,7 +67,7 @@ export default function App() {
       <Text style={styles.titulo}>Jogo da Velha</Text>
       <Placar placar={placar} />
       <StatusPartida turno={turno} vencedor={vencedor} />
-      <Tabuleiro board={board} onPressCasa={onPressCasa} desabilitado={!!vencedor || cpuPensando} />
+      <Tabuleiro board={board.casas} onPressCasa={onPressCasa} desabilitado={!!vencedor || cpuPensando} />
       <View style={styles.botao}>
         <Button title="Nova partida" onPress={novaPartida} />
       </View>
